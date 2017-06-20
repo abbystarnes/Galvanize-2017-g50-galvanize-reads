@@ -27,17 +27,19 @@ router.get('/books', async(req, res, next) => {
       next(err)
     });
 });
-// res.render('pages/books', {
-//   books: books
-// });
 
 router.get('/books/:id', async(req, res, next) => {
   let id = req.params.id;
+  var books
   knex('books')
-    .then((books) => {
-      res.render('pages/book', {
-        book: books[id - 1]
-      });
+    .then((ret) => {
+      books = ret
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        res.render("pages/book", {
+          book: books[id],
+          join: join
+        })
+      })
     })
     .catch((err) => {
       next(err)

@@ -7,7 +7,11 @@
   <body>
     <img height='100px' src="<%=book.book_cover_url%>" alt="">
     <h2><%=book.title%></h2>
-    <h3><%=book.author%></h3>
+    <% for (let x = 0; x < join.length; x++) { %>
+      <% if(join[x].books_id === book.id) {%>
+        <a href="/authors/<%=join[x].authors_id%>"><%=join[x].first_name%> <%=join[x].last_name%></a>
+      <% } %>
+    <% } %>
     <p><%=book.genre%></p>
     <p><%=book.description%></p>
     <button type="button" name="button">Edit</button>

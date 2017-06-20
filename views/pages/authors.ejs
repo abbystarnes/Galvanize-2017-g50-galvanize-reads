@@ -17,7 +17,7 @@
         <ul>
           <% for (var item in join) {%>
             <% if (join[item].first_name === authors[author].first_name) { %>
-              <p><%=join[item].title%></p>
+              <a href='books/<%=join[item].books_id%>'><%=join[item].title%></a>
             <% } %>
           <% } %>
         </ul>
