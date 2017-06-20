@@ -1,0 +1,31 @@
+{
+  "name": "g50-galvanize-reads",
+  "version": "1.0.0",
+  "description": "**Galvanize Reads** is a book catalog service that stores a list of recommended technology books. You are building a web app for them. It should allow you to:",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "knex": "knex"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abbystarnes/g50-galvanize-reads.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abbystarnes/g50-galvanize-reads/issues"
+  },
+  "homepage": "https://github.com/abbystarnes/g50-galvanize-reads#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "fs": "0.0.1-security",
+    "knex": "^0.13.0",
+    "path": "^0.12.7",
+    "pg": "^6.3.1",
+    "route": "^0.2.5"
+  }
+}
