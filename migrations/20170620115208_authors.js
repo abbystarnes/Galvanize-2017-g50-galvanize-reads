@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
     table.increments();
     table.string('first_name');
     table.string('last_name');
-    table.string('biography');
+    table.text('biography');
     table.string('portrait_url');
     table.timestamps(true, true);
   })
