@@ -42,7 +42,7 @@ router.get('/authors', async(req, res, next) => {
   knex('authors').select()
     .then((ret) => {
       authors = ret
-      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').then((join) => {
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
         res.render("pages/authors", {
           authors: authors,
           join: join
