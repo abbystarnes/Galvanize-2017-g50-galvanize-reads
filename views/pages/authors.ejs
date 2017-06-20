@@ -10,6 +10,7 @@
     <% for (var author in authors) { %>
       <div class='card'>
         <img height='100px' src="<%=authors[author].portrait_url%>" alt="">
+        <h3><%=authors[author].first_name%> <%=authors[author].last_name%></h3>
         <p><%=authors[author].biography%></p>
         <button type="button" name="button">Edit</button>
         <button type="button" name="button">Remove</button>

@@ -3,25 +3,23 @@
   <head>
     <meta charset="utf-8">
     <title>Galvanize Reads</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
   </head>
   <body>
     <% include ../partials/header %>
       <div class='card'>
         <img height='100px' src="<%=author.portrait_url%>" alt="">
+        <h3><%=author.first_name%> <%=author.last_name%></h2>
         <p><%=author.biography%></p>
         <button type="button" name="button">Edit</button>
         <button type="button" name="button">Remove</button>
         <ul>
-          <% for (var item in join) {%>
-            <% if (join[item].first_name === author.first_name) { %>
-              <p><%=join[item].title%></p>
+          <% for (let x = 0; x < join.length; x ++) { %>
+            <% if (join[x].authors_id === author.id) { %>
+              <a href='/books/<%=join[x].id%>'><%=join[x].title%></a>
             <% } %>
           <% } %>
         </ul>
       </div>
   </body>
 </html>
-<%# first_name: 'Alex',
-last_name: 'Martelli',
-biography: 'Alex Martelli spent 8 years with IBM Research, winning three Outstanding Technical Achievement Awards.He then spent 13 as a Senior Software Consultant at think3 inc, developing libraries, network protocols, GUI engines, event frameworks, and web access frontends. He has also taught programming languages, development methods, and numerical computing at Ferrara University and other venues. He\'s a C++MVP for Brainbench,and a member of the Python Software Foundation. He currently works for AB Strakt, a Python - centered software house in Göteborg, Sweden, mostly by telecommuting from his home in Bologna, Italy.Alex\'s proudest achievement is the articles that appeared in Bridge World (January/February 2000), which were hailed as giant steps towards solving issues that had haunted contract bridge theoreticians for decades.',
-portrait_url:%>

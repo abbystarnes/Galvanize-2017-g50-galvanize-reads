@@ -72,18 +72,6 @@ router.get('/authors/:id', async(req, res, next) => {
     });
 });
 
-// router.get("/schools",function(req,res){
-//   var schools
-//   knex("schools").select().then(function(ret){
-//     schools=ret
-//     return knex("students").select()
-//   }).then(function(students){
-//     res.render("schools",{
-//       students: students,
-//       schools: schools
-//     })
-//   })
-// })
 
 // get authors
 // get authors/id
