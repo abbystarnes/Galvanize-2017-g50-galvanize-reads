@@ -3,16 +3,27 @@
   <head>
     <meta charset="utf-8">
     <title>Galvanize Reads</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+</head>
   </head>
   <body>
+
     <% for (var book in books) { %>
-    <img height='100px' src="<%=books[book].book_cover_url%>" alt="">
-    <h2><%=books[book].title%></h2>
-    <h3><%=books[book].author%></h3>
-    <p><%=books[book].genre%></p>
-    <p><%=books[book].description%></p>
-    <button type="button" name="button">Edit</button>
-    <button type="button" name="button">Remove</button>
+      <div class="card">
+        <img height='100px' src="<%=books[book].book_cover_url%>" alt="">
+        <h2><%=books[book].first_name%></h2>
+          <% for (let x = 0; x < join.length; x++) { %>
+            <% if(join[x].books_id === books[book].id) {%>
+              <a href="/authors/<%=join[x].authors_id%>"><%=join[x].first_name%> <%=join[x].last_name%></a>
+            <% } %>
+          <% } %>
+
+        <p><%=books[book].genre%></p>
+        <p><%=books[book].description%></p>
+        <button type="button" name="button">Edit</button>
+        <button type="button" name="button">Remove</button>
+      </div>
     <% } %>
+
   </body>
 </html>

@@ -12,16 +12,24 @@ router.get('/', async(req, res, next) => {
 
 // BOOKS
 router.get('/books', async(req, res, next) => {
+  var books
   knex('books')
-    .then((books) => {
-      res.render('pages/books', {
-        books: books
-      });
+    .then((ret) => {
+      books = ret
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        res.render("pages/books", {
+          books: books,
+          join: join
+        })
+      })
     })
     .catch((err) => {
       next(err)
     });
 });
+// res.render('pages/books', {
+//   books: books
+// });
 
 router.get('/books/:id', async(req, res, next) => {
   let id = req.params.id;
@@ -73,8 +81,10 @@ router.get('/authors/:id', async(req, res, next) => {
 });
 
 
-// get authors
-// get authors/id
+// get authors X
+// get authors/id X
+// get books
+// get books/id
 // get books/new
 // get authors/new
 // get books/id/edit
