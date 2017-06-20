@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Galvanize Reads</title>
+  </head>
+  <body>
+    <% for (var book in books) { %>
+    <img height='100px' src="<%=books[book].book_cover_url%>" alt="">
+    <h2><%=books[book].title%></h2>
+    <h3><%=books[book].author%></h3>
+    <p><%=books[book].genre%></p>
+    <p><%=books[book].description%></p>
+    <button type="button" name="button">Edit</button>
+    <button type="button" name="button">Remove</button>
+    <% } %>
+  </body>
+</html>
