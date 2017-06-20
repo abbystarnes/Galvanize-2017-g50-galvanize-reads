@@ -6,13 +6,19 @@
   </head>
   <body>
     <% include ../partials/header %>
-    <% for (var author in authors) { %>
-    <img height='100px' src="<%=authors[author].portrait_url%>" alt="">
-    <h2><%=authors[author].first_name authors[author].last_name%></h2>
-    <p><%=authors[author].biography%></p>
-    <button type="button" name="button">Edit</button>
-    <button type="button" name="button">Remove</button>
-    <% } %>
+      <div class='card'>
+        <img height='100px' src="<%=author.portrait_url%>" alt="">
+        <p><%=author.biography%></p>
+        <button type="button" name="button">Edit</button>
+        <button type="button" name="button">Remove</button>
+        <ul>
+          <% for (var item in join) {%>
+            <% if (join[item].first_name === author.first_name) { %>
+              <p><%=join[item].title%></p>
+            <% } %>
+          <% } %>
+        </ul>
+      </div>
   </body>
 </html>
 <%# first_name: 'Alex',

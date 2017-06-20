@@ -54,6 +54,24 @@ router.get('/authors', async(req, res, next) => {
     });
 });
 
+router.get('/authors/:id', async(req, res, next) => {
+  let id = req.params.id;
+  var authors
+  knex('authors').select()
+    .then((ret) => {
+      authors = ret
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        res.render("pages/author", {
+          author: authors[id - 1],
+          join: join
+        })
+      })
+    })
+    .catch((err) => {
+      next(err)
+    });
+});
+
 // router.get("/schools",function(req,res){
 //   var schools
 //   knex("schools").select().then(function(ret){
