@@ -24,12 +24,10 @@ router.post('/books/new', async(req, res, next) => {
     description: req.body.description,
     book_cover_url: req.body.url
   }, '*').then((ret) => {
-    book = ret;
-    console.log(book, 'book');
-    console.log(book.title, book[0], 'book');
+    book = ret[0];
     return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
       res.render("pages/book", {
-        book: book[0],
+        book: book,
         join: join
       })
     })
@@ -94,6 +92,32 @@ router.get('/authors', async(req, res, next) => {
       next(err)
     });
 });
+
+
+router.get('/authors/new', async(req, res, next) => {
+  res.render("pages/authors_new")
+});
+
+router.post('/authors/new', async(req, res, next) => {
+  let author
+  knex('authors').insert({
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    biography: req.body.biography,
+    portrait_url: req.body.portrait_url
+  }, '*').then((ret) => {
+    author = ret[0];
+    return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+      res.render("pages/author", {
+        author: author,
+        join: join
+      })
+    })
+  }).catch((err) => {
+    next(err)
+  })
+});
+
 
 router.get('/authors/:id', async(req, res, next) => {
   let id = req.params.id;
