@@ -34,23 +34,20 @@ router.post('/books/new', async(req, res, next) => {
     description: req.body.description,
     book_cover_url: req.body.url
   }, '*').then((ret) => {
+    console.log(ret, 'ret');
+    console.log(ret[0], 'ret 0');
+    console.log(ret[0].id, 'ret 0 id');
     bookID = ret[0].id;
-    // console.log(ret[0].id, 'returned from insert');
     for (let x = 0; x < authors.length; x++) {
       knex('books_authors').insert({
         'books_id': bookID,
         'authors_id': authors[x]
-      }).then((ret) => {
-        // console.log(ret);
-      })
+      }).then((ret) => {})
     }
-    // console.log('getting here');
     return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
       myJoin = join
       return knex('books').where('id', bookID).then((data) => {
         book = data[0];
-        console.log(bookID, 'book id');
-        console.log(book, 'book');
         res.render("pages/book", {
           book: book,
           join: myJoin
