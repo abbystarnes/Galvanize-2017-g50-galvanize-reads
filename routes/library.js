@@ -14,17 +14,31 @@ router.get('/', async(req, res, next) => {
 
 // BOOKS
 router.get('/books/new', async(req, res, next) => {
-  res.render("pages/books_new")
+  knex('authors').then((ret) => {
+    console.log(ret, 'ret');
+    res.render("pages/books_new", {
+      authors: ret
+    })
+  })
 });
 
 router.post('/books/new', async(req, res, next) => {
   let book
+  let bookID
+  let authorID
+  let authors = req.body.authors;
+  console.log(authors, 'authors');
   knex('books').insert({
     title: req.body.title,
     genre: req.body.genre,
     description: req.body.description,
     book_cover_url: req.body.url
   }, '*').then((ret) => {
+    console.log(bookID, 'index of insert?');
+    knex('books').then((ret) {
+      bookID = ret.length;
+    })
+
     book = ret[0];
     return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
       return knex('books_authors').insert({}).then((ret) => {
