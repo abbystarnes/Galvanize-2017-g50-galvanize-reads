@@ -8,11 +8,10 @@
               <a href="/authors/<%=join[x].authors_id%>"><%=join[x].first_name%> <%=join[x].last_name%></a>
             <% } %>
           <% } %>
-
         <p><%=books[book].genre%></p>
         <p><%=books[book].description%></p>
-        <button type="button" name="button">Edit</button>
-        <button type="button" name="button">Remove</button>
+        <a class='btn' href='/book/<%=books[book].id%>/edit'>Edit</a>
+        <a class='btn' href='/book/<%=books[book].id%>/delete'>Remove</a>
       </div>
     <% } %>
 

@@ -39,8 +39,7 @@ router.post('/books/new', async(req, res, next) => {
 
 router.get('/books', async(req, res, next) => {
   var books
-  knex('books')
-    .then((ret) => {
+  knex('books').orderBy('id', 'asc').then((ret) => {
       books = ret
       return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
         res.render("pages/books", {
@@ -73,7 +72,49 @@ router.get('/books/:id', async(req, res, next) => {
 });
 
 
+router.get('/book/:id/edit', async(req, res, next) => {
+  let id = req.params.id;
+  console.log(id, 'id');
+  knex('books').where('id', id)
+    .then((ret) => {
+      book = ret[0]
+      console.log(book, 'book at id');
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        res.render("pages/book_edit", {
+          book: book,
+          join: join
+        })
+      })
+    })
+    .catch((err) => {
+      next(err)
+    });
+});
 
+
+router.post('/book/:id/edit', async(req, res, next) => {
+  console.log('got here');
+  let id = req.params.id;
+  console.log(id, 'id');
+  let book
+  knex('books').where('id', id).update({
+    title: req.body.title,
+    genre: req.body.genre,
+    description: req.body.description,
+    book_cover_url: req.body.book_cover_url
+  }, '*').then((ret) => {
+    book = ret[0];
+    console.log(book, 'book');
+    return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+      res.render("pages/book", {
+        book: book,
+        join: join
+      })
+    })
+  }).catch((err) => {
+    next(err)
+  })
+});
 
 // AUTHORS
 router.get('/authors', async(req, res, next) => {
@@ -136,6 +177,8 @@ router.get('/authors/:id', async(req, res, next) => {
       next(err)
     });
 });
+
+
 
 
 // get authors X
