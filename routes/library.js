@@ -17,19 +17,25 @@ router.get('/books/new', async(req, res, next) => {
 });
 
 router.post('/books/new', async(req, res, next) => {
-  // let title = req.body.title;
+  let book
   knex('books').insert({
     title: req.body.title,
     genre: req.body.genre,
     description: req.body.description,
     book_cover_url: req.body.url
   }, '*').then((ret) => {
-    res.send(ret)
+    book = ret;
+    console.log(book, 'book');
+    console.log(book.title, book[0], 'book');
+    return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+      res.render("pages/book", {
+        book: book[0],
+        join: join
+      })
+    })
   }).catch((err) => {
     next(err)
   })
-  // knex('books') add new book
-  // knex('students').insert({name: "Prince", fav_color: "purple"})
 });
 
 
