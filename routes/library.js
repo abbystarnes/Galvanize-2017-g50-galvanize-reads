@@ -4,8 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const routePath = path.join(__dirname, '../library.json')
 const bodyParser = require('body-parser');
-
+const methodOverride = require('method-override')
 const knex = require('../db/knex')
+router.use(methodOverride('X-HTTP-Method-Override'))
 
 router.get('/', async(req, res, next) => {
   res.render('pages/index');
@@ -222,6 +223,55 @@ router.get('/authors/:id', async(req, res, next) => {
 });
 
 
+router.get('/author/:id/delete', async(req, res, next) => {
+  let id = req.params.id;
+  var authors
+  knex('authors').select()
+    .then((ret) => {
+      authors = ret
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        res.render("pages/author_delete", {
+          author: authors[id - 1],
+          join: join
+        })
+      })
+    })
+    .catch((err) => {
+      next(err)
+    });
+});
+
+
+
+//
+router.delete('/authors/:id/delete', async(req, res, next) => {
+  let id = req.params.id;
+  let theJoin
+  console.log(id, 'id');
+  let authors
+  knex('authors').del().where('id', id).then((ret) => {
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        theJoin = join
+        console.log(theJoin, 'join');
+        return knex('authors').then((reta) => {
+          authors = reta
+          // console.log(authors, 'authors');
+          console.log(authors[1], 'an author');
+          res.render("pages/authors", {
+            authors: authors,
+            join: theJoin
+          })
+        }).catch((err) => {
+          next(err)
+        });
+      }).catch((err) => {
+        next(err)
+      });
+    })
+    .catch((err) => {
+      next(err)
+    });
+});
 
 
 // get authors X

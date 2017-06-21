@@ -5,7 +5,7 @@
         <h3><%=authors[author].first_name%> <%=authors[author].last_name%></h3>
         <p><%=authors[author].biography%></p>
         <a href='/author/<%=authors[author].id%>/edit' class='btn'>Edit</a>
-        <a href='/author/<%=authors[author].id%>/delete' class='btn'>Remove</a>
+        <a href='/author/<%=authors[author].id%>/delete' data='<%=authors[author].id%>' class='btn remove'>Remove</a>
         <ul>
           <% for (var item in join) {%>
             <% if (join[item].first_name === authors[author].first_name) { %>
