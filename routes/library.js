@@ -27,9 +27,11 @@ router.post('/books/new', async(req, res, next) => {
   }, '*').then((ret) => {
     book = ret[0];
     return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
-      res.render("pages/book", {
-        book: book,
-        join: join
+      return knex('books_authors').insert({}).then((ret) => {
+        res.render("pages/book", {
+          book: book,
+          join: join
+        })
       })
     })
   }).catch((err) => {
@@ -43,6 +45,7 @@ router.get('/books', async(req, res, next) => {
   knex('books').orderBy('id', 'asc').then((ret) => {
       books = ret
       return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        console.log(join, 'join');
         res.render("pages/books", {
           books: books,
           join: join
