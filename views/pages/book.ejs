@@ -9,8 +9,8 @@
       <% } %>
       <p><%=book.genre%></p>
       <p><%=book.description%></p>
-      <a class='btn' href='/book/edit'>Edit</a>
-      <a class='btn' href='/book/delete'>Remove</a>
+      <a class='btn' href='/book/<%=book.id%>/edit'>Edit</a>
+      <a class='btn' href='/book/<%=book.id%>/delete'>Remove</a>
     </div>
   </body>
 </html>

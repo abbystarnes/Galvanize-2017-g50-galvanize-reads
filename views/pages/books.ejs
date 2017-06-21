@@ -2,7 +2,7 @@
     <% for (var book in books) { %>
       <div class="card">
         <img height='100px' src="<%=books[book].book_cover_url%>" alt="">
-        <h2><%=books[book].first_name%></h2>
+        <h3><%=books[book].title%></h3>
           <% for (let x = 0; x < join.length; x++) { %>
             <% if(join[x].books_id === books[book].id) {%>
               <a href="/authors/<%=join[x].authors_id%>"><%=join[x].first_name%> <%=join[x].last_name%></a>

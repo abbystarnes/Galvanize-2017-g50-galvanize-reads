@@ -3,8 +3,8 @@
         <img height='100px' src="<%=author.portrait_url%>" alt="">
         <h3><%=author.first_name%> <%=author.last_name%></h2>
         <p><%=author.biography%></p>
-        <a href='/author/edit' class='btn'>Edit</a>
-        <a href='/author/delete' class='btn'>Remove</a>
+        <a href='/author/<%=author.id%>/edit' class='btn'>Edit</a>
+        <a href='/author/<%=author.id%>/delete' class='btn'>Remove</a>
         <ul>
           <% for (let x = 0; x < join.length; x ++) { %>
             <% if (join[x].authors_id === author.id) { %>
