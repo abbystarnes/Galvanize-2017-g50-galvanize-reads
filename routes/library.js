@@ -225,13 +225,14 @@ router.get('/authors/:id', async(req, res, next) => {
 
 router.get('/author/:id/delete', async(req, res, next) => {
   let id = req.params.id;
-  var authors
-  knex('authors').select()
+  console.log(id, 'id at get');
+  var author
+  knex('authors').where('id', id)
     .then((ret) => {
-      authors = ret
+      author = ret[0]
       return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
         res.render("pages/author_delete", {
-          author: authors[id - 1],
+          author: author,
           join: join
         })
       })
