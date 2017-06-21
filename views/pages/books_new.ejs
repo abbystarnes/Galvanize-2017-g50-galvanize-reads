@@ -12,7 +12,7 @@
       <label for="authors">select authors</label>
       <select style='display:block;height:100%;' multiple size='<%=authors.length%>' id='authors' name="authors">
         <% for (var author in authors) {%>
-        <option value="<%=authors[author].first_name%> <%=authors[author].last_name%>"><%=authors[author].first_name%> <%=authors[author].last_name%></option>
+        <option value="<%=authors[author].id%>"><%=authors[author].first_name%> <%=authors[author].last_name%></option>
         <% } %>
       </select>
 

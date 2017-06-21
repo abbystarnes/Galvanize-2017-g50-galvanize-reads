@@ -23,35 +23,46 @@ router.get('/books/new', async(req, res, next) => {
 });
 
 router.post('/books/new', async(req, res, next) => {
-  let book
   let bookID
-  let authorID
   let authors = req.body.authors;
-  console.log(authors, 'authors');
+  let book
+  // console.log(authors, 'authors');
+  let myJoin
   knex('books').insert({
     title: req.body.title,
     genre: req.body.genre,
     description: req.body.description,
     book_cover_url: req.body.url
   }, '*').then((ret) => {
-    console.log(bookID, 'index of insert?');
-    knex('books').then((ret) {
-      bookID = ret.length;
-    })
-
-    book = ret[0];
+    bookID = ret[0].id;
+    // console.log(ret[0].id, 'returned from insert');
+    for (let x = 0; x < authors.length; x++) {
+      knex('books_authors').insert({
+        'books_id': bookID,
+        'authors_id': authors[x]
+      }).then((ret) => {
+        // console.log(ret);
+      })
+    }
+    // console.log('getting here');
     return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
-      return knex('books_authors').insert({}).then((ret) => {
+      myJoin = join
+      return knex('books').where('id', bookID).then((data) => {
+        book = data[0];
+        console.log(bookID, 'book id');
+        console.log(book, 'book');
         res.render("pages/book", {
           book: book,
-          join: join
+          join: myJoin
         })
-      })
+      });
     })
   }).catch((err) => {
     next(err)
   })
+
 });
+
 
 
 router.get('/books', async(req, res, next) => {
