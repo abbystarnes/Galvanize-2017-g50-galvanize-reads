@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const routePath = path.join(__dirname, '../library.json')
+const bodyParser = require('body-parser');
 
 const knex = require('../db/knex')
 
@@ -11,6 +12,27 @@ router.get('/', async(req, res, next) => {
 });
 
 // BOOKS
+router.get('/books/new', async(req, res, next) => {
+  res.render("pages/books_new")
+});
+
+router.post('/books/new', async(req, res, next) => {
+  // let title = req.body.title;
+  knex('books').insert({
+    title: req.body.title,
+    genre: req.body.genre,
+    description: req.body.description,
+    book_cover_url: req.body.url
+  }, '*').then((ret) => {
+    res.send(ret)
+  }).catch((err) => {
+    next(err)
+  })
+  // knex('books') add new book
+  // knex('students').insert({name: "Prince", fav_color: "purple"})
+});
+
+
 router.get('/books', async(req, res, next) => {
   var books
   knex('books')
@@ -45,6 +67,9 @@ router.get('/books/:id', async(req, res, next) => {
       next(err)
     });
 });
+
+
+
 
 // AUTHORS
 router.get('/authors', async(req, res, next) => {
@@ -85,8 +110,10 @@ router.get('/authors/:id', async(req, res, next) => {
 
 // get authors X
 // get authors/id X
-// get books
-// get books/id
+// get books X
+// get books/id X
+
+
 // get books/new
 // get authors/new
 // get books/id/edit
@@ -102,7 +129,6 @@ router.get('/authors/:id', async(req, res, next) => {
 
 // delete books/id/delete
 // delete authors/id/delete
-
 
 
 module.exports = router
