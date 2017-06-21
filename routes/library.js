@@ -141,7 +141,7 @@ router.get('/book/:id/edit', async(req, res, next) => {
 });
 
 
-router.post('/book/:id/edit', async(req, res, next) => {
+router.put('/book/:id/edit', async(req, res, next) => {
   console.log('got here');
   let id = req.params.id;
   console.log(id, 'id');
@@ -202,7 +202,7 @@ router.get('/author/:id/edit', async(req, res, next) => {
     });
 });
 
-router.post('/author/:id/edit', async(req, res, next) => {
+router.put('/author/:id/edit', async(req, res, next) => {
   console.log('got here');
   let id = req.params.id;
   console.log(id, 'id');

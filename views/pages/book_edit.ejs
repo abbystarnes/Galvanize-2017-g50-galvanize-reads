@@ -1,5 +1,5 @@
 <% include ../partials/header %>
-    <form class="form" action="/book/<%=book.id%>/edit" method="POST">
+    <form class="form" action="/book/<%=book.id%>/edit?_method=PUT" method="POST">
       <label for="title">title</label>
       <input value='<%=book.title%>' id="title" type="text" name="title">
       <label for="genre">genre</label>

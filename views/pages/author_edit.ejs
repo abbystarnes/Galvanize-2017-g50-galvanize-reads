@@ -1,7 +1,7 @@
     <% include ../partials/header %>
     <a href="/books">Books</a>
     <a href="/authors">Authors</a>
-    <form class="form" action="/author/<%=author.id%>/edit" method="post">
+    <form class="form" action="/author/<%=author.id%>/edit?_method=PUT" method="post">
       <label for="first_name">First Name</label>
       <input id="first_name" type="text" name="first_name" value="<%=author.first_name%>">
       <label for="last_name">Last Name</label>
