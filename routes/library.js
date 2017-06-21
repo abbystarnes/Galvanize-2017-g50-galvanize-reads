@@ -72,6 +72,54 @@ router.get('/books/:id', async(req, res, next) => {
     });
 });
 
+router.get('/book/:id/delete', async(req, res, next) => {
+  let id = req.params.id;
+  var book
+  knex('books').where('id', id)
+    .then((ret) => {
+      book = ret[0]
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        res.render("pages/book_delete", {
+          book: book,
+          join: join
+        })
+      })
+    })
+    .catch((err) => {
+      next(err)
+    });
+});
+
+router.delete('/book/:id/delete', async(req, res, next) => {
+  let id = req.params.id;
+  let theJoin
+  console.log(id, 'id');
+  let books
+  knex('books').del().where('id', id).then((ret) => {
+      return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
+        theJoin = join
+        console.log(theJoin, 'join');
+        return knex('books').then((reta) => {
+          books = reta
+          // console.log(authors, 'authors');
+          console.log(books[1], 'a book');
+          res.render("pages/books", {
+            books: books,
+            join: theJoin
+          })
+        }).catch((err) => {
+          next(err)
+        });
+      }).catch((err) => {
+        next(err)
+      });
+    })
+    .catch((err) => {
+      next(err)
+    });
+});
+
+
 
 router.get('/book/:id/edit', async(req, res, next) => {
   let id = req.params.id;
@@ -281,21 +329,21 @@ router.delete('/authors/:id/delete', async(req, res, next) => {
 // get books/id X
 
 
-// get books/new
-// get authors/new
-// get books/id/edit
-// get authors/id/edit
+// get books/new X
+// get authors/new X
+// get books/id/edit X
+// get authors/id/edit X
 // get books/id/delete
-// get authors/id/delete
+// get authors/id/delete X
 
-// post books/new
-// post authors/new
+// post books/new X
+// post authors/new X
 
-// put books/id/edit
-// put authors/id/edit
+// put books/id/edit X
+// put authors/id/edit X
 
 // delete books/id/delete
-// delete authors/id/delete
+// delete authors/id/delete X
 
 
 module.exports = router

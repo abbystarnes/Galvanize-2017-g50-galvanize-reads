@@ -1,22 +1,19 @@
 <% include ../partials/header %>
-      <div class='card'>
-        <img height='100px' src="<%=author.portrait_url%>" alt="">
-        <h3><%=author.first_name%> <%=author.last_name%></h2>
-        <p><%=author.biography%></p>
-        <a href='/author/<%=author.id%>/edit' class='btn'>Edit</a>
-        <a href='/author/<%=author.id%>/delete' class='btn'>Remove</a>
-        <ul>
-          <% for (let x = 0; x < join.length; x ++) { %>
-            <% if (join[x].authors_id === author.id) { %>
-              <a href='/books/<%=join[x].id%>'><%=join[x].title%></a>
-            <% } %>
-          <% } %>
-        </ul>
-      </div>
-      <form class="" action="/authors/<%=author.id%>/delete" method="delete">
-        <label for="check">Delete this author?</label>
-        <input id="check" type="checkbox" name="check" value="">
-        <input type="submit" name="submit" value="">
-      </form>
-  </body>
+  <div class="card">
+    <img height='100px' src="<%=book.book_cover_url%>" alt="">
+    <h2><%=book.title%></h2>
+    <% for (let x = 0; x < join.length; x++) { %>
+      <% if(join[x].books_id === book.id) {%>
+        <a href="/authors/<%=join[x].authors_id%>"><%=join[x].first_name%> <%=join[x].last_name%></a>
+      <% } %>
+    <% } %>
+    <p><%=book.genre%></p>
+    <p><%=book.description%></p>
+  </div>
+  <form class="" action="/book/<%=book.id%>/delete?_method=DELETE" method="POST">
+    <label for="check">Delete this book?</label>
+    <input style='position:relative;left:0;opacity:1;' id="check" type="checkbox" name="check">
+    <input type="submit" name="submit" value="submit">
+  </form>
+</body>
 </html>
