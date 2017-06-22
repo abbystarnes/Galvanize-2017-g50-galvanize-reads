@@ -4,7 +4,8 @@
   "description": "**Galvanize Reads** is a book catalog service that stores a list of recommended technology books. You are building a web app for them. It should allow you to:",
   "main": "server.js",
   "engines": {
-    "node": "7.10.0"
+    "node": "7.10.0",
+    "npm": "4.2.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
