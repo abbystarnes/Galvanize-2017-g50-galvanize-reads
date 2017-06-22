@@ -11,33 +11,50 @@ router.use(methodOverride('X-HTTP-Method-Override'))
 router.get('/', async(req, res, next) => {
   res.render('pages/index');
 });
-
 // BOOKS
 router.get('/books/new', async(req, res, next) => {
-  res.render("pages/books_new")
+  knex('authors').then((ret) => {
+    console.log(ret, 'ret');
+    res.render("pages/books_new", {
+      authors: ret
+    })
+  })
 });
 
 router.post('/books/new', async(req, res, next) => {
+  let bookID
+  let authors = req.body.authors;
   let book
+  let myJoin
   knex('books').insert({
     title: req.body.title,
     genre: req.body.genre,
     description: req.body.description,
     book_cover_url: req.body.url
   }, '*').then((ret) => {
-    book = ret[0];
+    bookID = ret[0].id;
+    for (let x = 0; x < authors.length; x++) {
+      knex('books_authors').insert({
+        'books_id': bookID,
+        'authors_id': authors[x]
+      }).then((ret) => {})
+    }
     return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
-      return knex('books_authors').insert({}).then((ret) => {
+      myJoin = join
+      return knex('books').where('id', bookID).then((data) => {
+        book = data[0];
         res.render("pages/book", {
           book: book,
-          join: join
+          join: myJoin
         })
-      })
+      });
     })
   }).catch((err) => {
     next(err)
   })
+
 });
+
 
 
 router.get('/books', async(req, res, next) => {
@@ -45,7 +62,7 @@ router.get('/books', async(req, res, next) => {
   knex('books').orderBy('id', 'asc').then((ret) => {
       books = ret
       return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
-        console.log(join, 'join');
+        // console.log(join, 'join');
         res.render("pages/books", {
           books: books,
           join: join
@@ -104,6 +121,9 @@ router.delete('/book/:id/delete', async(req, res, next) => {
         console.log(theJoin, 'join');
         return knex('books').then((reta) => {
           books = reta
+          knex('books_authors').del().where('books_id', id).then((ret) => {
+            console.log(ret, 'deleted join table book');
+          })
           // console.log(authors, 'authors');
           console.log(books[1], 'a book');
           res.render("pages/books", {
@@ -126,15 +146,20 @@ router.delete('/book/:id/delete', async(req, res, next) => {
 
 router.get('/book/:id/edit', async(req, res, next) => {
   let id = req.params.id;
+  let authors
+  knex('authors').then((ret) => {
+    authors = ret
+    // console.log(authors, 'authors');
+  })
   console.log(id, 'id');
   knex('books').where('id', id)
     .then((ret) => {
       book = ret[0]
-      console.log(book, 'book at id');
       return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
         res.render("pages/book_edit", {
           book: book,
-          join: join
+          join: join,
+          authors: authors
         })
       })
     })
@@ -147,6 +172,7 @@ router.get('/book/:id/edit', async(req, res, next) => {
 router.put('/book/:id/edit', async(req, res, next) => {
   console.log('got here');
   let id = req.params.id;
+  let authors = req.body.authors;
   console.log(id, 'id');
   let book
   knex('books').where('id', id).update({
@@ -155,6 +181,16 @@ router.put('/book/:id/edit', async(req, res, next) => {
     description: req.body.description,
     book_cover_url: req.body.url
   }, '*').then((ret) => {
+
+    knex('books_authors').del().where('books_id', id).then((ret) => {
+      for (let x = 0; x < authors.length; x++) {
+        knex('books_authors').insert({
+          'books_id': id,
+          'authors_id': authors[x]
+        }).then((ret) => {})
+      }
+    })
+
     book = ret[0];
     console.log(book, 'book');
     return knex("authors").join('books_authors', 'authors.id', 'books_authors.authors_id').join('books', 'books.id', 'books_authors.books_id').then((join) => {
@@ -308,6 +344,9 @@ router.delete('/authors/:id/delete', async(req, res, next) => {
         return knex('authors').then((reta) => {
           authors = reta
           // console.log(authors, 'authors');
+          knex('books_authors').del().where('authors_id', id).then((ret) => {
+            console.log(ret, 'deleted join table author');
+          })
           console.log(authors[1], 'an author');
           res.render("pages/authors", {
             authors: authors,
@@ -325,28 +364,6 @@ router.delete('/authors/:id/delete', async(req, res, next) => {
     });
 });
 
-
-// get authors X
-// get authors/id X
-// get books X
-// get books/id X
-
-
-// get books/new X
-// get authors/new X
-// get books/id/edit X
-// get authors/id/edit X
-// get books/id/delete
-// get authors/id/delete X
-
-// post books/new X
-// post authors/new X
-
-// put books/id/edit X
-// put authors/id/edit X
-
-// delete books/id/delete
-// delete authors/id/delete X
 
 
 module.exports = router

@@ -8,7 +8,16 @@
       <input id="description" type="textarea" name="description" value="">
       <label for="url">book cover url</label>
       <input id="url" type="text" name="url" value="">
+
+      <label for="authors">select authors</label>
+      <select style='display:block;height:100%;' multiple size='<%=authors.length%>' id='authors' name="authors">
+        <% for (var author in authors) {%>
+        <option value="<%=authors[author].id%>"><%=authors[author].first_name%> <%=authors[author].last_name%></option>
+        <% } %>
+      </select>
+
       <input type="submit" name="submit" value="submit">
+
     </form>
   </body>
 </html>
