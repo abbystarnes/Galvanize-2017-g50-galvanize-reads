@@ -6,6 +6,7 @@ const routePath = path.join(__dirname, '../library.json')
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
 const knex = require('../db/knex')
+const pg = require('pg');
 router.use(methodOverride('X-HTTP-Method-Override'))
 
 router.get('/', async(req, res, next) => {
