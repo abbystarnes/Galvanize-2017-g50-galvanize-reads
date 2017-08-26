@@ -1,4 +1,4 @@
-[view live](https://galvanize-reads-abby-s.herokuapp.com/books https://www.pivotaltracker.com/n/projects/2060443)
+![view live](https://galvanize-reads-abby-s.herokuapp.com/books https://www.pivotaltracker.com/n/projects/2060443)
 
 ## Background
 
@@ -94,6 +94,3 @@ Add a README to your project that has:
 * A data model of the final data model of the project
 
 Submit the link to your repo.
-
-https://galvanize-reads-abby-s.herokuapp.com/books
-https://www.pivotaltracker.com/n/projects/2060443
