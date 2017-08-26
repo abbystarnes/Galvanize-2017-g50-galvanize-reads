@@ -1,4 +1,4 @@
-https://galvanize-reads-abby-s.herokuapp.com/books https://www.pivotaltracker.com/n/projects/2060443
+https://galvanize-reads-abby-s.herokuapp.com/books  
 
 ## Background
 
